@@ -1,0 +1,49 @@
+{
+  "todos": [
+    {
+      "userId": "8db195bf-3175-4508-8d7a-3fea029ca04c",
+      "lists": [
+        {
+          "id": "1d7069df-f124-497d-bc27-3ce0a4ec4647",
+          "title": "khushi",
+          "theme": "green",
+          "tasks": [
+            {
+              "id": "91abe005-8ebe-45da-8bf1-4f1d386b02d7",
+              "title": "usse mesge",
+              "completed": true,
+              "reminderTime": "2026-04-12T14:37:00.000Z",
+              "createdAt": "2026-04-12T14:36:27.708Z",
+              "order": 2
+            },
+            {
+              "id": "070e812e-f86b-4e3f-b568-c76d2065743b",
+              "title": "kesgrof",
+              "completed": true,
+              "reminderTime": null,
+              "createdAt": "2026-04-12T14:37:39.010Z",
+              "order": 2
+            },
+            {
+              "id": "eb7f6292-8b8f-4d1b-8ca5-a930504c981a",
+              "title": "skjghdkhshgorh",
+              "completed": false,
+              "reminderTime": null,
+              "createdAt": "2026-04-12T14:37:48.884Z",
+              "order": 3
+            },
+            {
+              "id": "8be11e62-b43d-4da6-b32a-cf9b48d14825",
+              "title": "kashfkdhk",
+              "completed": false,
+              "reminderTime": null,
+              "createdAt": "2026-04-12T14:37:53.903Z",
+              "order": 1
+            }
+          ],
+          "createdAt": "2026-04-12T14:34:52.147Z"
+        }
+      ]
+    }
+  ]
+}
