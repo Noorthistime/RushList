@@ -6,7 +6,9 @@ import fs from "fs";
 import path from "path";
 import lockfile from "proper-lockfile";
 
-const DATA_DIR = path.join(process.cwd(), "data");
+const DATA_DIR = process.env.VERCEL
+  ? path.join("/tmp", "data")
+  : path.join(process.cwd(), "data");
 
 const DEFAULT_USERS = JSON.stringify({ users: [] }, null, 2);
 const DEFAULT_TODOS = JSON.stringify({ todos: [] }, null, 2);
