@@ -3,10 +3,9 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { readJSON } from "@/lib/db";
+import { query } from "@/lib/db";
 import { verifyPassword, generateToken, createAuthCookieHeader } from "@/lib/auth";
 import { loginSchema } from "@/lib/validators";
-import { UsersData } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,8 +22,8 @@ export async function POST(request: NextRequest) {
     const { email, password } = parsed.data;
 
     // Find user
-    const usersData = await readJSON<UsersData>("users.json");
-    const user = usersData.users.find((u) => u.email === email);
+    const res = await query("SELECT * FROM users WHERE email = $1", [email]);
+    const user = res.rows[0];
 
     if (!user) {
       return NextResponse.json(
@@ -34,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password
-    const isValid = await verifyPassword(password, user.passwordHash);
+    const isValid = await verifyPassword(password, user.password_hash);
     if (!isValid) {
       return NextResponse.json(
         { success: false, error: "Invalid email or password" },
@@ -43,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate JWT and set cookie
-    const token = generateToken(user);
+    const token = generateToken({ id: user.id, name: user.name, email: user.email });
     const response = NextResponse.json({
       success: true,
       data: { id: user.id, name: user.name, email: user.email },

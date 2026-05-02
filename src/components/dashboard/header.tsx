@@ -9,6 +9,7 @@ import { Moon, Sun, LogOut, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { AuthUser } from "@/types";
+import { ProfileDialog } from "./profile-dialog";
 
 interface HeaderProps {
   user: AuthUser | null;
@@ -31,10 +32,10 @@ export function Header({ user, onLogout }: HeaderProps) {
             whileHover={{ rotate: 10, scale: 1.1 }}
             className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30"
           >
-            <CheckSquare className="w-5 h-5 text-white" />
+            <span className="font-bold text-white text-[10px]">SNM</span>
           </motion.div>
           <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hidden sm:block">
-            TaskFlow
+            P2P Nexus - SNM
           </h1>
         </div>
 
@@ -81,6 +82,8 @@ export function Header({ user, onLogout }: HeaderProps) {
               >
                 {user.name.charAt(0).toUpperCase()}
               </motion.div>
+
+              <ProfileDialog user={user} />
 
               <motion.div whileTap={{ scale: 0.9 }}>
                 <Button
