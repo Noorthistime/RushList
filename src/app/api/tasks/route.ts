@@ -5,9 +5,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { getAuthFromRequest } from "@/lib/auth";
-import { query } from "@/lib/db";
+import { updateJSON } from "@/lib/db";
 import { createTaskSchema } from "@/lib/validators";
-import { Task } from "@/types";
+import { Task, TodosData } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,29 +31,35 @@ export async function POST(request: NextRequest) {
 
     const { listId, title, reminderTime } = parsed.data;
 
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
-    const todos = res.rows[0]?.lists || [];
-    const list = todos.find((l: any) => l.id === listId);
-
-    if (!list) {
-      return NextResponse.json(
-        { success: false, error: "List not found" },
-        { status: 404 }
-      );
-    }
-
+    let listFound = false;
     const newTask: Task = {
       id: uuidv4(),
       title,
       completed: false,
       reminderTime: reminderTime || null,
       createdAt: new Date().toISOString(),
-      order: list.tasks.length,
+      order: 0,
     };
 
-    list.tasks.push(newTask);
+    await updateJSON<TodosData>("todos.json", (data) => {
+      const userTodos = data.todos.find((t) => t.userId === auth.userId);
+      if (userTodos) {
+        const list = userTodos.lists.find((l) => l.id === listId);
+        if (list) {
+          listFound = true;
+          newTask.order = list.tasks.length;
+          list.tasks.push(newTask);
+        }
+      }
+      return data;
+    });
 
-    await query("UPDATE todos SET lists = $1 WHERE user_id = $2", [JSON.stringify(todos), auth.userId]);
+    if (!listFound) {
+      return NextResponse.json(
+        { success: false, error: "List not found" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json(
       { success: true, data: newTask },

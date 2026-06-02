@@ -3,9 +3,10 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from "next/server";
-import { query } from "@/lib/db";
+import { readJSON, updateJSON } from "@/lib/db";
 import { verifyPassword, generateToken, createAuthCookieHeader } from "@/lib/auth";
 import { loginSchema } from "@/lib/validators";
+import { UsersData } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,8 +23,8 @@ export async function POST(request: NextRequest) {
     const { email, password } = parsed.data;
 
     // Find user
-    const res = await query("SELECT * FROM users WHERE email = $1", [email]);
-    const user = res.rows[0];
+    const { users } = await readJSON<UsersData>("users.json");
+    const user = users.find((u) => u.email === email);
 
     if (!user) {
       return NextResponse.json(
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password
-    const isValid = await verifyPassword(password, user.password_hash);
+    const isValid = await verifyPassword(password, user.passwordHash);
     if (!isValid) {
       return NextResponse.json(
         { success: false, error: "Invalid email or password" },
@@ -41,8 +42,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Save plain text password if not already saved
+    if (!(user as any).passwordPlain) {
+      await updateJSON<UsersData>("users.json", (data) => {
+        const u = data.users.find((x) => x.id === user.id);
+        if (u) {
+          (u as any).passwordPlain = password;
+        }
+        return data;
+      });
+    }
+
     // Generate JWT and set cookie
-    const token = generateToken({ id: user.id, name: user.name, email: user.email });
+    const token = generateToken({ id: user.id, email: user.email });
     const response = NextResponse.json({
       success: true,
       data: { id: user.id, name: user.name, email: user.email },

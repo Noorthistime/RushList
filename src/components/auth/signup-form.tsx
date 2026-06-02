@@ -58,7 +58,11 @@ function PasswordStrength({ password }: { password: string }) {
   );
 }
 
-export function SignupForm() {
+interface SignupFormProps {
+  onSwitchTab?: () => void;
+}
+
+export function SignupForm({ onSwitchTab }: SignupFormProps) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -236,12 +240,13 @@ export function SignupForm() {
             className="text-center text-sm text-muted-foreground mt-6"
           >
             Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-purple-400 hover:text-purple-300 transition-colors font-medium"
+            <button
+              type="button"
+              onClick={onSwitchTab}
+              className="text-purple-400 hover:text-purple-300 transition-colors font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Sign in
-            </Link>
+            </button>
           </motion.p>
         </div>
       </div>

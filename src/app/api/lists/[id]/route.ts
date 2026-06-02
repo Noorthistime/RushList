@@ -5,8 +5,9 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthFromRequest } from "@/lib/auth";
-import { query } from "@/lib/db";
+import { updateJSON } from "@/lib/db";
 import { updateListSchema } from "@/lib/validators";
+import { TodosData, TodoList } from "@/types";
 
 export async function PUT(
   request: NextRequest,
@@ -32,23 +33,28 @@ export async function PUT(
       );
     }
 
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
-    const lists = res.rows[0]?.lists || [];
-    const listIndex = lists.findIndex((l: any) => l.id === id);
+    let updatedList: TodoList | null = null;
+    await updateJSON<TodosData>("todos.json", (data) => {
+      const userTodos = data.todos.find((t) => t.userId === auth.userId);
+      if (userTodos) {
+        const list = userTodos.lists.find((l) => l.id === id);
+        if (list) {
+          if (parsed.data.title !== undefined) list.title = parsed.data.title;
+          if (parsed.data.theme !== undefined) list.theme = parsed.data.theme;
+          updatedList = list;
+        }
+      }
+      return data;
+    });
 
-    if (listIndex === -1) {
+    if (!updatedList) {
       return NextResponse.json(
         { success: false, error: "List not found" },
         { status: 404 }
       );
     }
 
-    if (parsed.data.title !== undefined) lists[listIndex].title = parsed.data.title;
-    if (parsed.data.theme !== undefined) lists[listIndex].theme = parsed.data.theme;
-
-    await query("UPDATE todos SET lists = $1 WHERE user_id = $2", [JSON.stringify(lists), auth.userId]);
-
-    return NextResponse.json({ success: true, data: lists[listIndex] });
+    return NextResponse.json({ success: true, data: updatedList });
   } catch (error) {
     console.error("PUT /api/lists/[id] error:", error);
     return NextResponse.json(
@@ -73,20 +79,25 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
-    const lists = res.rows[0]?.lists || [];
-    const index = lists.findIndex((l: any) => l.id === id);
+    let found = false;
+    await updateJSON<TodosData>("todos.json", (data) => {
+      const userTodos = data.todos.find((t) => t.userId === auth.userId);
+      if (userTodos) {
+        const index = userTodos.lists.findIndex((l) => l.id === id);
+        if (index !== -1) {
+          userTodos.lists.splice(index, 1);
+          found = true;
+        }
+      }
+      return data;
+    });
 
-    if (index === -1) {
+    if (!found) {
       return NextResponse.json(
         { success: false, error: "List not found" },
         { status: 404 }
       );
     }
-
-    lists.splice(index, 1);
-
-    await query("UPDATE todos SET lists = $1 WHERE user_id = $2", [JSON.stringify(lists), auth.userId]);
 
     return NextResponse.json({ success: true });
   } catch (error) {

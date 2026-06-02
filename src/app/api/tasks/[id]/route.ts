@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthFromRequest } from "@/lib/auth";
-import { query } from "@/lib/db";
+import { updateJSON } from "@/lib/db";
 import { updateTaskSchema } from "@/lib/validators";
+import { TodosData, Task } from "@/types";
 
 export async function PUT(
   request: NextRequest,
@@ -27,21 +28,24 @@ export async function PUT(
       );
     }
 
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
-    const lists = res.rows[0]?.lists || [];
-    
-    let updatedTask = null;
-    for (const list of lists) {
-      const task = list.tasks.find((t: any) => t.id === id);
-      if (task) {
-        if (parsed.data.title !== undefined) task.title = parsed.data.title;
-        if (parsed.data.completed !== undefined) task.completed = parsed.data.completed;
-        if (parsed.data.reminderTime !== undefined) task.reminderTime = parsed.data.reminderTime;
-        if (parsed.data.order !== undefined) task.order = parsed.data.order;
-        updatedTask = task;
-        break;
+    let updatedTask: Task | null = null;
+    await updateJSON<TodosData>("todos.json", (data) => {
+      const userTodos = data.todos.find((t) => t.userId === auth.userId);
+      if (userTodos) {
+        for (const list of userTodos.lists) {
+          const task = list.tasks.find((t) => t.id === id);
+          if (task) {
+            if (parsed.data.title !== undefined) task.title = parsed.data.title;
+            if (parsed.data.completed !== undefined) task.completed = parsed.data.completed;
+            if (parsed.data.reminderTime !== undefined) task.reminderTime = parsed.data.reminderTime;
+            if (parsed.data.order !== undefined) task.order = parsed.data.order;
+            updatedTask = task;
+            break;
+          }
+        }
       }
-    }
+      return data;
+    });
 
     if (!updatedTask) {
       return NextResponse.json(
@@ -49,8 +53,6 @@ export async function PUT(
         { status: 404 }
       );
     }
-
-    await query("UPDATE todos SET lists = $1 WHERE user_id = $2", [JSON.stringify(lists), auth.userId]);
 
     return NextResponse.json({ success: true, data: updatedTask });
   } catch (error) {
@@ -77,19 +79,22 @@ export async function DELETE(
 
     const { id } = await params;
     
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
-    const lists = res.rows[0]?.lists || [];
     let found = false;
-
-    for (const list of lists) {
-      const index = list.tasks.findIndex((t: any) => t.id === id);
-      if (index !== -1) {
-        list.tasks.splice(index, 1);
-        list.tasks.forEach((t: any, i: number) => (t.order = i));
-        found = true;
-        break;
+    await updateJSON<TodosData>("todos.json", (data) => {
+      const userTodos = data.todos.find((t) => t.userId === auth.userId);
+      if (userTodos) {
+        for (const list of userTodos.lists) {
+          const index = list.tasks.findIndex((t) => t.id === id);
+          if (index !== -1) {
+            list.tasks.splice(index, 1);
+            list.tasks.forEach((t, i) => (t.order = i));
+            found = true;
+            break;
+          }
+        }
       }
-    }
+      return data;
+    });
 
     if (!found) {
       return NextResponse.json(
@@ -97,8 +102,6 @@ export async function DELETE(
         { status: 404 }
       );
     }
-
-    await query("UPDATE todos SET lists = $1 WHERE user_id = $2", [JSON.stringify(lists), auth.userId]);
 
     return NextResponse.json({ success: true });
   } catch (error) {

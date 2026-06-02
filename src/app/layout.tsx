@@ -7,7 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "TaskFlow | Futuristic Todo List",
+  title: "RushList-SNM",
   description: "A premium, futuristic full-stack todo list application",
 };
 

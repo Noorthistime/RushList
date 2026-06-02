@@ -21,15 +21,25 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get(COOKIE_NAME)?.value;
 
+  // Redirect legacy /login and /signup routes to /auth
+  if (pathname === "/login" || pathname === "/signup") {
+    if (token) {
+      const decoded = decodeJWT(token);
+      if (decoded && decoded.exp * 1000 > Date.now()) {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+      }
+    }
+    return NextResponse.redirect(new URL("/auth", request.url));
+  }
+
   // Public paths that don't need auth
   const isPublicPath =
-    pathname === "/login" ||
-    pathname === "/signup" ||
+    pathname === "/auth" ||
     pathname.startsWith("/api/auth/");
 
   if (isPublicPath) {
-    // If user is already authenticated and visits login/signup, redirect to dashboard
-    if (token && (pathname === "/login" || pathname === "/signup")) {
+    // If user is already authenticated and visits /auth, redirect to dashboard
+    if (token && pathname === "/auth") {
       const decoded = decodeJWT(token);
       if (decoded && decoded.exp * 1000 > Date.now()) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
@@ -47,7 +57,7 @@ export function proxy(request: NextRequest) {
           { status: 401 }
         );
       }
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/auth", request.url));
     }
 
     // Basic expiry check
@@ -58,7 +68,7 @@ export function proxy(request: NextRequest) {
             { success: false, error: "Token expired" },
             { status: 401 }
           )
-        : NextResponse.redirect(new URL("/login", request.url));
+        : NextResponse.redirect(new URL("/auth", request.url));
       response.cookies.delete(COOKIE_NAME);
       return response;
     }
@@ -72,6 +82,7 @@ export const config = {
     "/dashboard/:path*",
     "/login",
     "/signup",
+    "/auth",
     "/api/lists/:path*",
     "/api/tasks/:path*",
   ],

@@ -35,7 +35,7 @@ export function Header({ user, onLogout }: HeaderProps) {
             <span className="font-bold text-white text-[10px]">SNM</span>
           </motion.div>
           <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hidden sm:block">
-            P2P Nexus - SNM
+            RushList-SNM
           </h1>
         </div>
 

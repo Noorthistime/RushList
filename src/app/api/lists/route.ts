@@ -6,9 +6,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 import { getAuthFromRequest } from "@/lib/auth";
-import { query } from "@/lib/db";
+import { readJSON, updateJSON } from "@/lib/db";
 import { createListSchema } from "@/lib/validators";
-import { TodoList } from "@/types";
+import { TodoList, TodosData } from "@/types";
 
 export async function GET(request: NextRequest) {
   try {
@@ -20,11 +20,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
+    const { todos } = await readJSON<TodosData>("todos.json");
+    const userTodos = todos.find((t) => t.userId === auth.userId);
     
     return NextResponse.json({
       success: true,
-      data: res.rows[0]?.lists || [],
+      data: userTodos?.lists || [],
     });
   } catch (error) {
     console.error("GET /api/lists error:", error);
@@ -63,11 +64,15 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    const res = await query("SELECT lists FROM todos WHERE user_id = $1", [auth.userId]);
-    const lists = res.rows[0]?.lists || [];
-    lists.push(newList);
-
-    await query("UPDATE todos SET lists = $1 WHERE user_id = $2", [JSON.stringify(lists), auth.userId]);
+    await updateJSON<TodosData>("todos.json", (data) => {
+      let userTodos = data.todos.find((t) => t.userId === auth.userId);
+      if (!userTodos) {
+        userTodos = { userId: auth.userId, lists: [] };
+        data.todos.push(userTodos);
+      }
+      userTodos.lists.push(newList);
+      return data;
+    });
 
     return NextResponse.json(
       { success: true, data: newList },

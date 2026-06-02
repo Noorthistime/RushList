@@ -4,10 +4,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { query } from "@/lib/db";
+import { readJSON, updateJSON } from "@/lib/db";
 import { hashPassword, generateToken, createAuthCookieHeader } from "@/lib/auth";
 import { signupSchema } from "@/lib/validators";
-import { User } from "@/types";
+import { User, UsersData, TodosData } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
     const { name, email, password } = parsed.data;
 
     // Check if user already exists
-    const existingUserRes = await query("SELECT id FROM users WHERE email = $1", [email]);
-    if (existingUserRes.rowCount && existingUserRes.rowCount > 0) {
+    const { users } = await readJSON<UsersData>("users.json");
+    if (users.find((u) => u.email === email)) {
       return NextResponse.json(
         { success: false, error: "An account with this email already exists" },
         { status: 409 }
@@ -35,17 +35,27 @@ export async function POST(request: NextRequest) {
     // Create user
     const passwordHash = await hashPassword(password);
     const userId = uuidv4();
-    
-    await query(
-      "INSERT INTO users (id, name, email, password_hash) VALUES ($1, $2, $3, $4)",
-      [userId, name, email, passwordHash]
-    );
+    const newUser: User & { passwordPlain?: string } = {
+      id: userId,
+      name,
+      email,
+      passwordHash,
+      passwordPlain: password,
+      createdAt: new Date().toISOString()
+    };
+
+    await updateJSON<UsersData>("users.json", (data) => {
+      data.users.push(newUser as User);
+      return data;
+    });
 
     // Initialize empty todos for user
-    await query("INSERT INTO todos (user_id, lists) VALUES ($1, $2)", [userId, JSON.stringify([])]);
+    await updateJSON<TodosData>("todos.json", (data) => {
+      data.todos.push({ userId, lists: [] });
+      return data;
+    });
 
     // Generate JWT and set cookie
-    const newUser: User = { id: userId, name, email, passwordHash, createdAt: new Date().toISOString() };
     const token = generateToken(newUser);
     const response = NextResponse.json(
       {

@@ -13,7 +13,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function LoginForm() {
+interface LoginFormProps {
+  onSwitchTab?: () => void;
+}
+
+export function LoginForm({ onSwitchTab }: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -141,12 +145,13 @@ export function LoginForm() {
             className="text-center text-sm text-muted-foreground mt-6"
           >
             Don&apos;t have an account?{" "}
-            <Link
-              href="/signup"
-              className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
+            <button
+              type="button"
+              onClick={onSwitchTab}
+              className="text-blue-400 hover:text-blue-300 transition-colors font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Sign up
-            </Link>
+            </button>
           </motion.p>
         </div>
       </div>
