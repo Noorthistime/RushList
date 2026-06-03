@@ -1,3 +1,20 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": "99367c44-1bae-478d-952a-e869d24b62db",
+      "name": "noor",
+      "email": "noor2@gmail.com",
+      "passwordHash": "$2b$10$qSeIkZPu3s5IFdRa/l.8/ecyTzYCvNiloAu99QwPQ9xV5a5GaivPC",
+      "passwordPlain": "Noor@123",
+      "createdAt": "2026-06-03T10:25:18.546Z"
+    },
+    {
+      "id": "335e102f-d0ef-4781-ade2-6f607e1acff7",
+      "name": "Test User",
+      "email": "test@example.com",
+      "passwordHash": "$2b$10$f51Z7w5DbfeTTnj2zn/zA.7ymXRLsnFsjFvZ86mOSvKF0rYwX.znW",
+      "passwordPlain": "password123",
+      "createdAt": "2026-06-03T10:28:39.721Z"
+    }
+  ]
 }

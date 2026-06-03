@@ -24,7 +24,7 @@
 - [ ] PUT/DELETE /api/tasks/[id]
 
 ## Phase 4: Middleware
-- [ ] JWT route protection middleware
+- [x] JWT route protection middleware
 
 ## Phase 5: Hooks
 - [ ] use-auth

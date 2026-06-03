@@ -13,7 +13,7 @@ import { JWT_SECRET, JWT_EXPIRY, BCRYPT_ROUNDS, COOKIE_NAME } from "./constants"
  * Hash a password using bcrypt
  */
 export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, BCRYPT_ROUNDS);
+  return bcrypt.hashSync(password, BCRYPT_ROUNDS);
 }
 
 /**
@@ -23,7 +23,7 @@ export async function verifyPassword(
   password: string,
   hash: string
 ): Promise<boolean> {
-  return bcrypt.compare(password, hash);
+  return bcrypt.compareSync(password, hash);
 }
 
 /**
