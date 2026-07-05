@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -28,6 +28,19 @@ export function TaskItem({ task, themeColor, onToggle, onDelete, onEdit }: TaskI
     isDragging,
   } = useSortable({ id: task.id });
 
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    if (!task.reminderTime) return;
+    
+    // Update every second to tick the progress and time remaining smoothly
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [task.reminderTime]);
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -44,8 +57,52 @@ export function TaskItem({ task, themeColor, onToggle, onDelete, onEdit }: TaskI
     return format(date, "MMM d, h:mm a");
   };
 
+  const getProgress = () => {
+    if (task.completed) return 100;
+    if (!task.reminderTime || !task.createdAt) return 0;
+    
+    const start = new Date(task.createdAt).getTime();
+    const end = new Date(task.reminderTime).getTime();
+    const current = now.getTime();
+    
+    if (current >= end) return 100;
+    if (current <= start) return 0;
+    
+    const total = end - start;
+    const elapsed = current - start;
+    return Math.min(100, Math.max(0, (elapsed / total) * 100));
+  };
+
+  const getTimeRemainingText = () => {
+    if (task.completed) return "Completed";
+    if (!task.reminderTime) return "";
+    
+    const end = new Date(task.reminderTime).getTime();
+    const current = now.getTime();
+    const diff = end - current;
+    
+    if (diff <= 0) return "Time's Up!";
+    
+    const secs = Math.floor(diff / 1000) % 60;
+    const mins = Math.floor(diff / (1000 * 60)) % 60;
+    const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    const parts = [];
+    if (days > 0) parts.push(`${days}d`);
+    if (hours > 0) parts.push(`${hours}h`);
+    if (mins > 0) parts.push(`${mins}m`);
+    if (days === 0 && hours === 0) {
+      parts.push(`${secs}s`);
+    }
+    
+    return parts.join(" ") + " left";
+  };
+
   const reminderText = getReminderText();
-  const isOverdue = reminderText === "Overdue" && !task.completed;
+  const progress = getProgress();
+  const timeRemaining = getTimeRemainingText();
+  const isTimeUp = progress >= 100 && !task.completed;
 
   return (
     <motion.div
@@ -87,13 +144,41 @@ export function TaskItem({ task, themeColor, onToggle, onDelete, onEdit }: TaskI
         >
           {task.title}
         </span>
-        {reminderText && (
-          <span className={`text-xs flex items-center gap-1 mt-1 ${
-            isOverdue ? "text-destructive font-medium" : "text-muted-foreground"
-          }`}>
-            <Clock className="w-3 h-3" />
-            {reminderText}
-          </span>
+        
+        {task.reminderTime && (
+          <div className="mt-2 space-y-1.5 w-full">
+            <div className="flex justify-between items-center text-[10px]">
+              <span className={`flex items-center gap-1 ${
+                isTimeUp ? "text-destructive font-semibold animate-pulse" : "text-muted-foreground"
+              }`}>
+                <Clock className="w-3 h-3" />
+                {reminderText}
+              </span>
+              <span className={`font-semibold ${isTimeUp ? "text-destructive" : ""}`} style={!isTimeUp && !task.completed ? { color: themeColor } : {}}>
+                {task.completed ? "Completed" : isTimeUp ? "Time's Up!" : `${Math.round(progress)}% (${timeRemaining})`}
+              </span>
+            </div>
+            <div className="relative w-full h-1 bg-muted/20 border border-border/30 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="h-full rounded-full"
+                style={{
+                  background: task.completed 
+                    ? "var(--color-green-500, #22c55e)" 
+                    : isTimeUp 
+                    ? "var(--color-destructive, #ef4444)" 
+                    : `linear-gradient(90deg, ${themeColor}, var(--color-pink-500, #ec4899))`,
+                  boxShadow: task.completed
+                    ? "none"
+                    : isTimeUp 
+                    ? "0 0 6px rgba(239, 68, 68, 0.4)" 
+                    : `0 0 6px color-mix(in srgb, ${themeColor} 40%, transparent)`,
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
 

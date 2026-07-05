@@ -48,7 +48,14 @@ export type ThemeColor =
   | "red"
   | "pink"
   | "cyan"
-  | "amber";
+  | "amber"
+  | "rose_pink"
+  | "warmer_orange"
+  | "nothing_red"
+  | "ethereal_blue"
+  | "emerald_green"
+  | "contrast_grey"
+  | "match_accent";
 
 export interface JWTPayload {
   userId: string;

@@ -10,6 +10,7 @@ import { TaskList } from "@/components/tasks/task-list";
 import { FullPageLoader } from "@/components/shared/loading-spinner";
 import { TodoList } from "@/types";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { CreateListDialog } from "@/components/lists/create-list-dialog";
 
 export default function DashboardPage() {
   const { lists, loading, createList, updateList, deleteList, fetchLists } = useLists();
@@ -33,6 +34,7 @@ export default function DashboardPage() {
            <h1 className="text-3xl font-bold">Your Lists</h1>
            <p className="text-muted-foreground mt-1">Manage and track your tasks.</p>
          </motion.div>
+         <CreateListDialog onCreateList={createList} />
       </div>
 
       <ListGrid

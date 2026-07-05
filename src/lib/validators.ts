@@ -12,9 +12,8 @@ const sanitizedString = z
 
 // Auth schemas
 export const signupSchema = z.object({
-  name: sanitizedString
-    .pipe(z.string().min(2, "Name must be at least 2 characters").max(50, "Name too long")),
-  email: z.string().trim().email("Invalid email address").toLowerCase(),
+  username: sanitizedString
+    .pipe(z.string().min(2, "Username must be at least 2 characters").max(50, "Username too long")),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -22,7 +21,7 @@ export const signupSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().trim().email("Invalid email address").toLowerCase(),
+  username: z.string().trim().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -30,14 +29,14 @@ export const loginSchema = z.object({
 export const createListSchema = z.object({
   title: sanitizedString
     .pipe(z.string().min(1, "Title is required").max(100, "Title too long")),
-  theme: z.enum(["blue", "purple", "green", "orange", "red", "pink", "cyan", "amber"]).default("blue"),
+  theme: z.enum(["blue", "purple", "green", "orange", "red", "pink", "cyan", "amber", "rose_pink", "warmer_orange", "nothing_red", "ethereal_blue", "emerald_green", "contrast_grey", "match_accent"]).default("blue"),
 });
 
 export const updateListSchema = z.object({
   title: sanitizedString
     .pipe(z.string().min(1, "Title is required").max(100, "Title too long"))
     .optional(),
-  theme: z.enum(["blue", "purple", "green", "orange", "red", "pink", "cyan", "amber"]).optional(),
+  theme: z.enum(["blue", "purple", "green", "orange", "red", "pink", "cyan", "amber", "rose_pink", "warmer_orange", "nothing_red", "ethereal_blue", "emerald_green", "contrast_grey", "match_accent"]).optional(),
 });
 
 // Task schemas

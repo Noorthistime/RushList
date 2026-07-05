@@ -20,15 +20,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { email, password } = parsed.data;
+    const { username, password } = parsed.data;
 
-    // Find user
+    // Find user (by name / username)
     const { users } = await readJSON<UsersData>("users.json");
-    const user = users.find((u) => u.email === email);
+    let user = users.find((u) => 
+      u.name === username ||
+      u.email === username
+    );
+
+    if (!user) {
+      user = users.find((u) => 
+        u.name.toLowerCase() === username.toLowerCase() ||
+        u.email.toLowerCase() === username.toLowerCase()
+      );
+    }
 
     if (!user) {
       return NextResponse.json(
-        { success: false, error: "Invalid email or password" },
+        { success: false, error: "Invalid username or password" },
         { status: 401 }
       );
     }
@@ -37,7 +47,7 @@ export async function POST(request: NextRequest) {
     const isValid = await verifyPassword(password, user.passwordHash);
     if (!isValid) {
       return NextResponse.json(
-        { success: false, error: "Invalid email or password" },
+        { success: false, error: "Invalid username or password" },
         { status: 401 }
       );
     }

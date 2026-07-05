@@ -16,8 +16,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen flex flex-col bg-background/50 relative">
       {/* Background ambient lighting */}
       <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-[50vw] h-[50vh] rounded-full bg-blue-500/5 blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[50vw] h-[50vh] rounded-full bg-purple-500/5 blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-[50vw] h-[50vh] rounded-full bg-pink-500/5 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[50vw] h-[50vh] rounded-full bg-rose-500/5 blur-[120px]" />
       </div>
 
       <Header user={user} onLogout={logout} />

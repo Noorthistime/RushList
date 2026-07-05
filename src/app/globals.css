@@ -48,6 +48,13 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@theme {
+  --color-rose-500: var(--accent-rose-500);
+  --color-rose-600: var(--accent-rose-600);
+  --color-pink-500: var(--accent-pink-500);
+  --color-pink-600: var(--accent-pink-600);
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -81,6 +88,52 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --accent-rose-500: #f43f5e;
+  --accent-rose-600: #e11d48;
+  --accent-pink-500: #ec4899;
+  --accent-pink-600: #db2777;
+}
+
+[data-accent="rose_pink"] {
+  --accent-rose-500: #f43f5e;
+  --accent-rose-600: #e11d48;
+  --accent-pink-500: #ec4899;
+  --accent-pink-600: #db2777;
+}
+
+[data-accent="warmer_orange"] {
+  --accent-rose-500: #FF5722;
+  --accent-rose-600: #E64A19;
+  --accent-pink-500: #FF8A65;
+  --accent-pink-600: #FF7043;
+}
+
+[data-accent="nothing_red"] {
+  --accent-rose-500: #FF0031;
+  --accent-rose-600: #D30026;
+  --accent-pink-500: #FF4066;
+  --accent-pink-600: #FF1A46;
+}
+
+[data-accent="ethereal_blue"] {
+  --accent-rose-500: #42A5F5;
+  --accent-rose-600: #1E88E5;
+  --accent-pink-500: #90CAF9;
+  --accent-pink-600: #64B5F6;
+}
+
+[data-accent="emerald_green"] {
+  --accent-rose-500: #2E7D32;
+  --accent-rose-600: #1B5E20;
+  --accent-pink-500: #81C784;
+  --accent-pink-600: #4CAF50;
+}
+
+[data-accent="contrast_grey"] {
+  --accent-rose-500: #757575;
+  --accent-rose-600: #616161;
+  --accent-pink-500: #BDBDBD;
+  --accent-pink-600: #9E9E9E;
 }
 
 .dark {
@@ -127,4 +180,85 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Custom premium header animations & styles */
+@keyframes shimmer-glow {
+  0%, 100% {
+    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3), 
+                0 0 15px -3px color-mix(in srgb, var(--accent-rose-500) 8%, transparent);
+  }
+  50% {
+    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3), 
+                0 0 25px -1px color-mix(in srgb, var(--accent-rose-500) 15%, transparent);
+  }
+}
+
+.premium-header {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3), 
+              0 1px 0 0 rgba(255,255,255,0.03);
+  animation: shimmer-glow 8s ease-in-out infinite;
+}
+
+.premium-header:hover {
+  background-color: color-mix(in srgb, var(--background) 75%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--accent-rose-500) 25%, transparent);
+  box-shadow: 0 12px 30px -10px rgba(0,0,0,0.5), 
+              0 0 35px -2px color-mix(in srgb, var(--accent-rose-500) 20%, transparent);
+}
+
+.premium-logo-text {
+  background-size: 200% auto;
+  animation: logo-glow-x 5s linear infinite;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--accent-rose-500) 25%, transparent);
+}
+
+@keyframes logo-glow-x {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.premium-header-btn {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.premium-header-btn:hover {
+  transform: translateY(-2px);
+  background-color: color-mix(in srgb, var(--accent-rose-500) 10%, transparent) !important;
+  color: var(--accent-rose-500) !important;
+  box-shadow: 0 4px 15px -3px color-mix(in srgb, var(--accent-rose-500) 25%, transparent) !important;
+}
+
+.premium-header-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.premium-header-btn:hover::after {
+  border-color: color-mix(in srgb, var(--accent-rose-500) 35%, transparent);
+  box-shadow: inset 0 0 8px color-mix(in srgb, var(--accent-rose-500) 15%, transparent);
+}
+
+.premium-avatar-btn {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 15px -3px color-mix(in srgb, var(--accent-rose-500) 30%, transparent) !important;
+}
+
+.premium-avatar-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px -2px color-mix(in srgb, var(--accent-rose-500) 50%, transparent) !important;
 }

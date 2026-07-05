@@ -21,13 +21,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, email, password } = parsed.data;
+    const { username, password } = parsed.data;
 
-    // Check if user already exists
+    // Check if user already exists (unique username check)
     const { users } = await readJSON<UsersData>("users.json");
-    if (users.find((u) => u.email === email)) {
+    if (users.find((u) => u.name.toLowerCase() === username.toLowerCase())) {
       return NextResponse.json(
-        { success: false, error: "An account with this email already exists" },
+        { success: false, error: "Username is already taken" },
         { status: 409 }
       );
     }
@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
     const userId = uuidv4();
     const newUser: User & { passwordPlain?: string } = {
       id: userId,
-      name,
-      email,
+      name: username,
+      email: `${username}@rushlist.local`, // dummy email for DB compatibility
       passwordHash,
       passwordPlain: password,
       createdAt: new Date().toISOString()
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json(
       {
         success: true,
-        data: { id: userId, name, email },
+        data: { id: userId, name: username, email: newUser.email },
       },
       { status: 201 }
     );

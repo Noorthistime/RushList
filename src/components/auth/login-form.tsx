@@ -19,7 +19,7 @@ interface LoginFormProps {
 
 export function LoginForm({ onSwitchTab }: LoginFormProps) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -34,7 +34,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
 
@@ -59,7 +59,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
     >
       <div className="relative backdrop-blur-xl bg-card/60 border border-border/50 rounded-2xl p-8 shadow-2xl">
         {/* Glow effect */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10 pointer-events-none" />
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-rose-500/10 via-transparent to-pink-500/10 pointer-events-none" />
 
         <div className="relative z-10">
           <motion.div
@@ -68,7 +68,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
             transition={{ delay: 0.2 }}
             className="text-center mb-8"
           >
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
               Welcome Back
             </h1>
             <p className="text-muted-foreground mt-2">Sign in to your account</p>
@@ -86,17 +86,17 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="login-email" className="text-sm font-medium">
-                Email
+              <Label htmlFor="login-username" className="text-sm font-medium">
+                Username
               </Label>
               <Input
-                id="login-email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="login-username"
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
-                className="h-11 bg-background/50 border-border/50 focus:border-blue-500/50 transition-colors"
+                className="h-11 bg-background/50 border-border/50 focus:border-rose-500/50 transition-colors"
               />
             </div>
 
@@ -112,7 +112,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-11 bg-background/50 border-border/50 focus:border-blue-500/50 transition-colors pr-10"
+                  className="h-11 bg-background/50 border-border/50 focus:border-rose-500/50 transition-colors pr-10"
                 />
                 <button
                   type="button"
@@ -127,7 +127,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+              className="w-full h-11 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-medium transition-all duration-300 shadow-lg shadow-rose-500/25 hover:shadow-rose-500/40"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -148,7 +148,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
             <button
               type="button"
               onClick={onSwitchTab}
-              className="text-blue-400 hover:text-blue-300 transition-colors font-medium bg-transparent border-none p-0 cursor-pointer"
+              className="text-rose-400 hover:text-rose-300 transition-colors font-medium bg-transparent border-none p-0 cursor-pointer"
             >
               Sign up
             </button>

@@ -1,12 +1,29 @@
 {
   "todos": [
     {
-      "userId": "99367c44-1bae-478d-952a-e869d24b62db",
+      "userId": "335e102f-d0ef-4781-ade2-6f607e1acff7",
       "lists": []
     },
     {
-      "userId": "335e102f-d0ef-4781-ade2-6f607e1acff7",
-      "lists": []
+      "userId": "aebed2f4-2fa3-4b7f-9903-5d0052c76342",
+      "lists": [
+        {
+          "id": "48f26ca7-b83f-4a9a-bdce-f9789185bd83",
+          "title": "Test",
+          "theme": "match_accent",
+          "tasks": [
+            {
+              "id": "8fc88cfa-d1e6-40da-be19-04b23ea2a287",
+              "title": "test",
+              "completed": false,
+              "reminderTime": null,
+              "createdAt": "2026-07-05T10:13:42.802Z",
+              "order": 0
+            }
+          ],
+          "createdAt": "2026-07-05T10:13:26.727Z"
+        }
+      ]
     }
   ]
 }

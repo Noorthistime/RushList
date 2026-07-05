@@ -17,8 +17,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { THEME_COLORS } from "@/lib/constants";
 import { ThemeColor, TodoList } from "@/types";
+
+const EXISTING_COLORS: ThemeColor[] = ["blue", "purple", "green", "red", "pink", "cyan"];
+const ACCENT_COLORS: ThemeColor[] = ["rose_pink", "warmer_orange", "nothing_red", "ethereal_blue", "emerald_green", "contrast_grey"];
 
 interface EditListDialogProps {
   list: TodoList;
@@ -72,44 +76,102 @@ export function EditListDialog({ list, onUpdateList }: EditListDialogProps) {
             />
           </div>
 
-          <div className="space-y-3">
-            <Label>Theme Color</Label>
-            <div className="grid grid-cols-4 gap-3">
-              {(Object.keys(THEME_COLORS) as ThemeColor[]).map((color) => (
-                <motion.button
-                  key={color}
-                  type="button"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setTheme(color)}
-                  className={`relative h-12 rounded-xl transition-all duration-200 flex flex-col items-center justify-center gap-1 ${
-                    theme === color
-                      ? "ring-2 ring-offset-2 ring-offset-background"
-                      : "hover:opacity-80"
-                  }`}
-                  style={{
-                    backgroundColor: THEME_COLORS[color].bg,
-                    borderColor: THEME_COLORS[color].border,
-                    borderWidth: "1px",
-                    boxShadow: theme === color ? THEME_COLORS[color].glow : "none",
-                  }}
-                >
-                  <div
-                    className="w-4 h-4 rounded-full"
-                    style={{ backgroundColor: THEME_COLORS[color].accent }}
-                  />
-                  <span className="text-[10px] text-muted-foreground">
-                    {THEME_COLORS[color].name}
-                  </span>
-                </motion.button>
-              ))}
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <Label>Accent Colors</Label>
+              <div className="grid grid-cols-3 gap-3">
+                {ACCENT_COLORS.map((color) => (
+                  <motion.button
+                    key={color}
+                    type="button"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setTheme(color)}
+                    className={`relative h-12 rounded-xl transition-all duration-200 flex flex-col items-center justify-center gap-1 ${
+                      theme === color
+                        ? "ring-2 ring-offset-2 ring-offset-background"
+                        : "hover:opacity-80"
+                    }`}
+                    style={{
+                      backgroundColor: THEME_COLORS[color].bg,
+                      borderColor: THEME_COLORS[color].border,
+                      borderWidth: "1px",
+                      boxShadow: theme === color ? THEME_COLORS[color].glow : "none",
+                    }}
+                  >
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: THEME_COLORS[color].accent }}
+                    />
+                    <span className="text-[10px] text-muted-foreground">
+                      {THEME_COLORS[color].name}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
             </div>
+
+            <div className="space-y-3 pt-2">
+              <Label>More Colors</Label>
+              <div className="grid grid-cols-3 gap-3">
+                {EXISTING_COLORS.map((color) => (
+                  <motion.button
+                    key={color}
+                    type="button"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setTheme(color)}
+                    className={`relative h-12 rounded-xl transition-all duration-200 flex flex-col items-center justify-center gap-1 ${
+                      theme === color
+                        ? "ring-2 ring-offset-2 ring-offset-background"
+                        : "hover:opacity-80"
+                    }`}
+                    style={{
+                      backgroundColor: THEME_COLORS[color].bg,
+                      borderColor: THEME_COLORS[color].border,
+                      borderWidth: "1px",
+                      boxShadow: theme === color ? THEME_COLORS[color].glow : "none",
+                    }}
+                  >
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: THEME_COLORS[color].accent }}
+                    />
+                    <span className="text-[10px] text-muted-foreground">
+                      {THEME_COLORS[color].name}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-background/30 backdrop-blur-xs">
+            <div className="space-y-0.5 max-w-[80%]">
+              <Label htmlFor="match-accent-toggle" className="text-sm font-medium cursor-pointer">
+                Match Accent Theme
+              </Label>
+              <p className="text-[11px] text-muted-foreground leading-snug">
+                Automatically match this list's color to the active website accent color
+              </p>
+            </div>
+            <Checkbox
+              id="match-accent-toggle"
+              checked={theme === "match_accent"}
+              onCheckedChange={(checked) => {
+                if (checked) {
+                  setTheme("match_accent");
+                } else {
+                  setTheme(list.theme !== "match_accent" ? list.theme : "blue");
+                }
+              }}
+            />
           </div>
 
           <Button
             type="submit"
             disabled={loading || !title.trim()}
-            className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
+            className="w-full h-11 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin mr-2" />
