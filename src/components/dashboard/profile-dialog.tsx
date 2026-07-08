@@ -10,7 +10,7 @@ import { AuthUser } from "@/types";
 
 interface ProfileDialogProps {
   user: AuthUser;
-  children?: React.ReactNode;
+  children?: React.ReactElement;
 }
 
 export function ProfileDialog({ user, children }: ProfileDialogProps) {
