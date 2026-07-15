@@ -82,6 +82,18 @@
           "createdAt": "2026-07-15T19:03:57.598Z"
         }
       ]
+    },
+    {
+      "userId": "beeab7f1-a0ef-4a34-b12e-8a29550c60ef",
+      "lists": [
+        {
+          "id": "043e5289-ae5f-4e66-9a81-135d18f5a140",
+          "title": "test",
+          "theme": "match_accent",
+          "tasks": [],
+          "createdAt": "2026-07-15T19:16:08.368Z"
+        }
+      ]
     }
   ]
 }

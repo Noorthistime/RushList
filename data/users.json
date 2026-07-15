@@ -31,6 +31,14 @@
       "passwordHash": "$2b$10$Fu87xTWQbElL2Dh.6l73pOknnEGiYXJc5K4q1FANby0xX6.uBhWOG",
       "passwordPlain": "Password123!",
       "createdAt": "2026-07-15T19:03:00.041Z"
+    },
+    {
+      "id": "beeab7f1-a0ef-4a34-b12e-8a29550c60ef",
+      "name": "noor2@gmail.com",
+      "email": "noor2@gmail.com@rushlist.local",
+      "passwordHash": "$2b$10$6ErxM0sOmkcvkcf78dKam.HluejNNVUtmbRHsk1fljrKx4K84YCv.",
+      "passwordPlain": "Noor@123",
+      "createdAt": "2026-07-15T19:15:56.065Z"
     }
   ]
 }
