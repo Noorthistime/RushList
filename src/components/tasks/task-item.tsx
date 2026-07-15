@@ -182,7 +182,7 @@ export function TaskItem({ task, themeColor, onToggle, onDelete, onEdit }: TaskI
         )}
       </div>
 
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
         <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted/50" onClick={() => onEdit(task)}>
           <Pencil className="w-3.5 h-3.5" />
         </Button>

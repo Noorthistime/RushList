@@ -82,7 +82,7 @@ export function CreateListDialog({ onCreateList }: CreateListDialogProps) {
           <div className="space-y-4">
             <div className="space-y-3">
               <Label>Accent Colors</Label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 min-[380px]:grid-cols-3 gap-2 min-[380px]:gap-3">
                 {ACCENT_COLORS.map((color) => (
                   <motion.button
                     key={color}
@@ -116,7 +116,7 @@ export function CreateListDialog({ onCreateList }: CreateListDialogProps) {
 
             <div className="space-y-3 pt-2">
               <Label>More Colors</Label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 min-[380px]:grid-cols-3 gap-2 min-[380px]:gap-3">
                 {EXISTING_COLORS.map((color) => (
                   <motion.button
                     key={color}

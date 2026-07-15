@@ -24,6 +24,64 @@
           "createdAt": "2026-07-05T10:13:26.727Z"
         }
       ]
+    },
+    {
+      "userId": "2a490541-6c86-43ba-9c06-4d3a1220b875",
+      "lists": [
+        {
+          "id": "e0d3f547-5db8-42c6-8daf-463d76fcb649",
+          "title": "Work tasks",
+          "theme": "match_accent",
+          "tasks": [
+            {
+              "id": "2e3403f1-6590-4a02-83ae-bbd90760f563",
+              "title": "Task 1",
+              "completed": false,
+              "reminderTime": null,
+              "createdAt": "2026-07-15T18:57:14.252Z",
+              "order": 0
+            },
+            {
+              "id": "298f38d5-a190-402d-ae96-8c6666c6f872",
+              "title": "Task 2",
+              "completed": false,
+              "reminderTime": null,
+              "createdAt": "2026-07-15T18:57:33.743Z",
+              "order": 1
+            },
+            {
+              "id": "f67c903c-b2ae-487d-acda-a0d4c4d01a32",
+              "title": "Task 3",
+              "completed": false,
+              "reminderTime": null,
+              "createdAt": "2026-07-15T18:57:54.529Z",
+              "order": 2
+            }
+          ],
+          "createdAt": "2026-07-15T18:56:24.136Z"
+        }
+      ]
+    },
+    {
+      "userId": "31908b98-4b4b-41cd-87d4-ffc72f78feaa",
+      "lists": [
+        {
+          "id": "ccfdd5a4-689e-4444-b914-424223dd54eb",
+          "title": "Work tasks",
+          "theme": "blue",
+          "tasks": [
+            {
+              "id": "a3a8b4f8-69f8-4384-9d26-dca002a996cd",
+              "title": "Finish report",
+              "completed": true,
+              "reminderTime": "2026-07-24T06:30:00.000Z",
+              "createdAt": "2026-07-15T19:05:10.050Z",
+              "order": 0
+            }
+          ],
+          "createdAt": "2026-07-15T19:03:57.598Z"
+        }
+      ]
     }
   ]
 }

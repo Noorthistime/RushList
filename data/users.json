@@ -15,6 +15,22 @@
       "passwordHash": "$2b$10$6z1ihFhgV74hHqd.Z0Mbhe3A.budkVVVrtiiGsY5TCeHBnPPIx28C",
       "passwordPlain": "Noor@123",
       "createdAt": "2026-07-05T10:13:11.959Z"
+    },
+    {
+      "id": "2a490541-6c86-43ba-9c06-4d3a1220b875",
+      "name": "noor2@gmail.comjohndoe",
+      "email": "noor2@gmail.comjohndoe@rushlist.local",
+      "passwordHash": "$2b$10$rA8wvfepXQAUM66Hm3BtJuS4SWmNMr4i2glwtqQ21WInhoeckERsa",
+      "passwordPlain": "password123",
+      "createdAt": "2026-07-15T18:55:15.489Z"
+    },
+    {
+      "id": "31908b98-4b4b-41cd-87d4-ffc72f78feaa",
+      "name": "johndoe",
+      "email": "johndoe@rushlist.local",
+      "passwordHash": "$2b$10$Fu87xTWQbElL2Dh.6l73pOknnEGiYXJc5K4q1FANby0xX6.uBhWOG",
+      "passwordPlain": "Password123!",
+      "createdAt": "2026-07-15T19:03:00.041Z"
     }
   ]
 }

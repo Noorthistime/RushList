@@ -158,7 +158,7 @@ export function CreateTaskDialog({ listId, onCreateTask, themeColor }: CreateTas
                       {selectedDate ? format(selectedDate, "PPP") : <span className="text-muted-foreground/60">Pick a date</span>}
                     </Button>
                   } />
-                  <PopoverContent className="w-[304px] p-0 bg-card/98 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl">
+                  <PopoverContent className="w-[304px] max-w-[calc(100vw-2.5rem)] p-0 bg-card/98 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl">
                     <div className="p-3">
                       <div className="flex items-center justify-between mb-4">
                         <button
@@ -260,7 +260,7 @@ export function CreateTaskDialog({ listId, onCreateTask, themeColor }: CreateTas
               </div>
 
               {/* Custom HH:MM:SS Picker Row */}
-              <div className="flex items-center justify-between p-3 rounded-xl border border-border/50 bg-background/30 backdrop-blur-xs">
+              <div className="flex flex-col min-[380px]:flex-row min-[380px]:items-center justify-between gap-2 min-[380px]:gap-4 p-3 rounded-xl border border-border/50 bg-background/30 backdrop-blur-xs">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <Clock className="w-4 h-4" />
                   <span>Set Time</span>

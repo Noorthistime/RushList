@@ -64,7 +64,7 @@ export function TaskList({ listId, theme, tasks, onCreateTask, onUpdateTask, onD
         <CreateTaskDialog listId={listId} onCreateTask={onCreateTask} themeColor={themeData.accent} />
       </div>
 
-      <ScrollArea className="flex-1 -mx-4 px-4 h-[500px]">
+      <ScrollArea className="flex-1 -mx-4 px-4 h-[calc(100dvh-12rem)] md:h-[500px] max-h-[500px]">
         {localTasks.length === 0 ? (
           <EmptyState
             icon={<CheckCircle2 className="w-10 h-10" />}

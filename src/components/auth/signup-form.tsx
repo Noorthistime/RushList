@@ -114,7 +114,7 @@ export function SignupForm({ onSwitchTab }: SignupFormProps) {
       transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
       className="w-full max-w-md"
     >
-      <div className="relative backdrop-blur-xl bg-card/60 border border-border/50 rounded-2xl p-8 shadow-2xl">
+      <div className="relative backdrop-blur-xl bg-card/60 border border-border/50 rounded-2xl p-6 sm:p-8 shadow-2xl">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-rose-500/10 via-transparent to-pink-500/10 pointer-events-none" />
 
         <div className="relative z-10">
