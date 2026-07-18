@@ -2,6 +2,7 @@
 A modern, full-stack Todo & Task Tracker application built with Next.js, React, Tailwind CSS, and TypeScript, featuring secure JSON database storage, multi-list support, reminder notifications, drag-and-drop task ordering, and dynamic dark mode toggles.
 
 ## Project Structure
+```text
 Rushlist/
 ├── data/                 # JSON file-based database storage
 │   ├── todos.json        # User tasks and lists database
@@ -55,6 +56,7 @@ Rushlist/
 ├── components.json       # Shadcn UI configuration
 ├── package.json          # Dependency and build scripts
 └── tsconfig.json         # TypeScript configurations
+```
 
 ## Features
 ### 1. User Management
