@@ -46,7 +46,7 @@ export default function DashboardPage() {
       />
 
       <Sheet open={!!selectedList} onOpenChange={(val) => !val && setSelectedList(null)}>
-        <SheetContent side="right" className="w-[100vw] sm:max-w-2xl bg-background/80 backdrop-blur-2xl border-l-border/50 p-6 shadow-2xl">
+        <SheetContent side="right" className="w-[100vw] data-[side=right]:w-full sm:data-[side=right]:max-w-2xl bg-background/80 backdrop-blur-2xl border-l-border/50 p-4 md:p-6 shadow-2xl">
            {currentList && (
              <TaskList
                 listId={currentList.id}
